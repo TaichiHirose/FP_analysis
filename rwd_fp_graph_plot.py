@@ -1,9 +1,9 @@
 import pandas as pd
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt 
 import matplotlib.patches as patches
 import os
 
-#--------CSVファイル--------------
+#CSVファイル
 csv_filenames = [
     "",
     "",
@@ -13,6 +13,29 @@ csv_filenames = [
     "",
     ]
 folder_path = '/Users/'
+
+#∆F/Fグラフの設定
+df_f_color = "green"
+
+df_f_xmin = -30 #X軸の最小値
+df_f_xmax = 61 #X軸の最大値
+df_f_xtick = 15 #X軸の間隔
+
+df_f_ymin = -4 #Y軸の最小値
+df_f_ymax = 11 #Y軸の最大値
+df_f_ytick = 2 #Y軸の間隔
+
+#Z-scoreグラフの設定
+z_score_color = "Blue"
+
+z_score_xmin = -30
+z_score_xmax = 61
+z_score_xtick = 15
+
+z_score_ymin = -4
+z_score_ymax = 11
+z_score_ytick = 2
+
 
 
 for csv_filename in csv_filenames:
@@ -28,17 +51,15 @@ for csv_filename in csv_filenames:
     df['Time(min)'] = time_from_start - 30
 
     fig, ax = plt.subplots(figsize=(15,7))
-    ax.plot(df['Time(min)'], df['DeltaF/F-1'], label="dF/F", color="green")
+    ax.plot(df['Time(min)'], df['DeltaF/F-1'], label="dF/F", color=df_f_color)
 
     graph_title = csv_filename.replace(".csv", "")
     ax.set_title(f"{graph_title}", fontsize=28)
 
     ax.set_xlabel("Time(minutes)", fontsize=26)
     ax.set_ylabel("dF/F", fontsize=26)
-    ax.set_xlim(-30, 60)
-    ax.set_ylim(top=6)
-    ax.set_xticks(range(-30, 61, 15))
-    ax.set_yticks(range(-2, 13, 2))
+    ax.set_xticks(range(df_f_xmin, df_f_xmax, df_f_xtick))
+    ax.set_yticks(range(df_f_ymin, df_f_ymax, df_f_ytick))
     ax.tick_params(axis='both', which='major', labelsize=20)
 
 
@@ -55,8 +76,9 @@ for csv_filename in csv_filenames:
     fig.savefig(output_path)
 
     plt.close(fig)
-
-
+    
+    
+    
 for csv_filename in csv_filenames:
     file_path = os.path.join(folder_path, csv_filename)
 
@@ -69,19 +91,15 @@ for csv_filename in csv_filenames:
     df['Time(min)'] = time_from_start - 30
 
     fig, ax = plt.subplots(figsize=(15, 7))
-    ax.plot(df['Time(min)'], df['Zscore-1'], color="red")
+    ax.plot(df['Time(min)'], df['Zscore-1'], color=z_score_color)
 
     graph_title = csv_filename.replace(".csv", "")
     ax.set_title(f"{graph_title}", fontsize=28)
 
     ax.set_xlabel("Time (minutes)", fontsize=26)
     ax.set_ylabel("Z-score", fontsize=26)
-    ax.set_xlim(-30, 60)
-    
-    ax.set_ylim(-4, 10)
-    ax.set_yticks(range(-4, 11, 2))
-    
-    ax.set_xticks(range(-30, 61, 15))
+    ax.set_xticks(range(z_score_xmin, z_score_xmax, z_score_xtick))
+    ax.set_yticks(range(z_score_ymin, z_score_ymax, z_score_ytick))
     ax.tick_params(axis='both', which='major', labelsize=20)
 
     ax.axvline(x=0, color='grey', linestyle='--')
